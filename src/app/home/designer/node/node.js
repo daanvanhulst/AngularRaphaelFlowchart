@@ -16,7 +16,7 @@ angular.module('grp.home.designer.node', [
   'grp.draggableObject'
 ])
 
-.directive( 'node', function() {
+.directive( 'node', function(grpCanvasService) {
     return {
         require: ['^draggableObject', 'node'],
         scope: false,
@@ -37,7 +37,6 @@ angular.module('grp.home.designer.node', [
             //text.attr({fill: 'black', 'text-anchor': 'start'});
             for(var i = 0; i < parent.shape.inputConnectors.length; i++) {
                 var inputCircle = parent.canvas.circle(parent.getX(), parent.getY() + (30 * i + self.margin), 10);
-                inputCircle.mousedown(mouseDown);
                 inputCircle.mouseup(mouseUp);
                 inputCircle.attr({fill: "green", "fill-opacity": 0.5, "stroke-width": 0});
                 parent.set.push(inputCircle);
@@ -47,16 +46,15 @@ angular.module('grp.home.designer.node', [
                 var outputCircle = parent.canvas.circle(parent.getX() + parent.width, parent.getY() + (30 * i + self.margin), 10);
                 outputCircle.attr({fill: "green", "fill-opacity": 0.5, "stroke-width": 0});
                 outputCircle.mousedown(mouseDown);
-                outputCircle.mouseup(mouseUp);
                 parent.set.push(outputCircle);
             }
 
             function mouseDown(e) {
-
+                grpCanvasService.mouseDownOnOutput();
             }
 
             function mouseUp(e) {
-
+                grpCanvasService.mouseUpOnInput();
             }
 
             parent.set.push(rect);
